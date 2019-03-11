@@ -1,18 +1,19 @@
 {
   "name": "attendance-calculator",
   "version": "1.0.0",
-  "description": "Calsulate attendance and safe days",
+  "description": "Attendance and safe days calculator",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parthshahk/Attendance-Scheduler.git"
+  },
   "author": "Parth Shah",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^1.18.10"
+  "bugs": {
+    "url": "https://github.com/parthshahk/Attendance-Scheduler/issues"
   },
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "express": "^4.16.4"
-  }
+  "homepage": "https://github.com/parthshahk/Attendance-Scheduler#readme"
 }
