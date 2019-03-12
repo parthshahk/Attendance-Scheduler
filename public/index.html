@@ -1,15 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <form action="/send" method="POST">
-        <textarea name="code" id="code" cols="80" rows="10"></textarea>
-        <input type="submit" value="Submit">
-    </form>
-</body>
+    <html lang="en">
+    <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101233231-2"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-101233231-2');
+        </script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <title>Attendance Scheduler</title>
+    </head>
+    <body class="grey lighten-4">
+
+        <div class="container">
+            
+            <div class="row">
+                <div class="col s12 center">
+                    <h4 class="light">Attendance Scheduler</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <h5 class="light">Steps:</h5>
+                </div>
+                <div class="col s12">
+                    <p style="line-height: 1.7rem;">
+                        Log in to <a href="https://egov.ddit.ac.in" target="_BLANK">https://egov.ddit.ac.in/</a><br>
+                        Go to <b>Exam Results</b> > <b>View Internal Result</b>.<br>
+                        <b>Right Click</b> > <b>View Page Source</b> (or press CTRL + U).<br>
+                        <b>Refresh</b> the page and <b>Confirm Form Resubmission</b> if prompted.<br>
+                        <b>Paste the full source</b> code below and <b>Continue</b>.<br>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <form action="/send" method="POST">
+                    
+                    <div class="col s12">
+                        <textarea name="code" id="code" style="height:100px;background-color:#fff;"></textarea>
+                    </div>
+
+                    <div class="row"></div>
+
+                    <div class="col s12 center">
+                        <input class="btn-large blue" value="Submit" type="submit">
+                    </div>
+                    
+                </form>
+            </div>
+            
+        </div>
+    </body>
 </html>
