@@ -68,6 +68,14 @@ const server = http.createServer((req, res) =>{
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(data));
         
+    }else if(req.url.includes('/result.html')){
+
+        let filePath = path.join(__dirname, 'public', 'result.html');
+        fs.readFile(filePath, (err, content) => {
+            res.writeHead(200, {'Content-Type': 'text/html'})
+            res.end(content, 'utf8'); 
+        });
+
     }else{
 
         let filePath = path.join(__dirname, 'public', req.url === '/' ? 'index.html' : req.url);
