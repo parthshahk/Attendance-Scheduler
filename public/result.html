@@ -1,17 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Result</h1>
-    <script>
-        // alert(window.location.href);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Attendance Scheduler</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    </head>
+    <body>
 
-        fetch('http://localhost/scraper?a935714f-d844-4d8d-b15d-3cde3cc87538')
-    </script>
-</body>
+        <div class="container" id="app">
+            
+            <div class="row">
+                <div class="col s12 center">
+                    <h4 class="light">Attendance Scheduler</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 center">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Attendance</th>
+                                <th>Safe Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="subject in resp">
+                                <td v-text="subject.name"></td>
+                                <td v-text="subject.percent + '%'"></td>
+                                <td v-text="subject.safeDays"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 center">
+                    <h5>Overall Attendance: <span v-text="totalPercent"></span>%</h5>
+                    <p v-if="totalPercent>75">You may drop <b v-text="totalSafeDays"></b> hours of lectures before your attendance goes below <b>75%</b></p>
+                    <p><b>Safe Hours</b> are the number of hours you may drop for the subject before your attendance goes below <b>80%</b></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s8 offset-s2 divider"></div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 center">
+                    <h5 class="light"><a href="https://parthshah.xyz">parthshah.xyz</a></h5>
+                </div>
+            </div>
+
+            <div class="row"></div>
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script>
+            new Vue({
+                el: '#app',
+
+                data: {
+                    resp:[],
+                    totalPercent: 0,
+                    totalSafeDays: 0
+                },
+
+                mounted: function(){
+                    
+                    var id = window.location.search.slice(3);
+                    var origin = window.location.origin;
+                    
+                    var self = this;
+                    fetch(`${origin}/scraper?${id}`)
+                        .then((resp) => {
+                            return resp.json();
+                        })
+                        .then((json) => {
+                            var len = json.subjects.length
+                            
+                            for(var i=0; i<len; i++){
+
+                                var x = new Object;
+                                x.name = json.subjects[i];
+
+                                var percent = 0;
+                                if(json.attendanceOutOf[i] != 0){
+                                    percent = json.attendance[i]/json.attendanceOutOf[i];
+                                }
+                                x.percent = Math.round(percent*100);
+                                
+                                x.safeDays = 0;
+                                if(percent > 0.8){
+                                    x.safeDays = Math.floor(json.attendance[i] / 0.8) - json.attendanceOutOf[i];
+                                }
+
+                                self.resp.push(x);
+                            }
+
+                            var totalA=0;
+                            var totalO=0;
+
+                            for(var i=0; i<6; i++){
+                                totalA += json.attendance[i];
+                                totalO += json.attendanceOutOf[i];
+                            }
+                            self.totalPercent = Math.round((totalA/totalO)*100);
+
+                            var totalSafe = 0;
+                            if(totalA/totalO > 0.75){
+                                totalSafe = Math.floor(totalA / 0.75) - totalO;
+                            }
+                            self.totalSafeDays = totalSafe
+                            
+                        })
+                }
+            });
+        </script>
+    </body>
 </html>
